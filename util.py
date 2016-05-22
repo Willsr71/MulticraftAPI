@@ -8,11 +8,11 @@ def get_json_file(file_name):
     try:
         return json.loads(open(file_name).read())
     except FileNotFoundError:
-        print("File does not exist")
+        print("File \"" + file_name + "\" does not exist")
         sys.exit(1)
 
 
-def set_json_file(file_name, json_arr, indents):
+def set_json_file(file_name, json_arr, indents=True):
     if indents:
         indents = 2
     else:

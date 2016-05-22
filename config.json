@@ -4,6 +4,12 @@
     "user": "user",
     "key": "key"
   },
+  "debug": {
+    "show_server_status_info": false,
+    "show_api_request_info": false,
+    "show_folders_in_backup_progress": false,
+    "show_files_in_backup_progress": false
+  },
   "server_location": "D:\\minecraft\\servers\\",
   "backup_location": "E:\\server_backups\\{SERVER_NAME}\\%Y\\%m\\%d\\%Y-%m-%d-%H.%M.%S.zip",
   "ignore_after_start_delay": 300
