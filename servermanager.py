@@ -53,7 +53,7 @@ def check_servers():
 
             start_time = time.time()
 
-            # util.zip_directory(server_location, backup_location, config["debug"]["show_folders_in_backup_progress"], config["debug"]["show_files_in_backup_progress"])
+            util.zip_directory(server_location, backup_location, config["debug"]["show_folders_in_backup_progress"], config["debug"]["show_files_in_backup_progress"])
 
             finish_time = time.time() - start_time
 
