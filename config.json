@@ -1,0 +1,10 @@
+{
+  "multicraftapi": {
+    "location": "http://example.com/multicraft/api.php",
+    "user": "user",
+    "key": "key"
+  },
+  "server_location": "D:\\minecraft\\servers\\",
+  "backup_location": "E:\\server_backups\\{SERVER_NAME}\\%Y\\%m\\%d\\%Y-%m-%d-%H.%M.%S.zip",
+  "ignore_after_start_delay": 300
+}
