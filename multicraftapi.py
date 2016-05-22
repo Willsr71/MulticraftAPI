@@ -30,16 +30,14 @@ class MulticraftAPI:
         params["_MulticraftAPIUser"] = self.multicraft_user
 
         keystr = ""
-        query = ""
 
         for param in params:
             keystr += param + str(params[param])
-            query += "&" + param + "=" + str(params[param])
 
         key = hmac.new(self.multicraft_key.encode('utf-8'), keystr.encode('utf-8'), hashlib.sha256).hexdigest()
-        query += "&_MulticraftAPIKey=" + key
+        params["_MulticraftAPIKey"] = key
 
-        request = requests.get(self.multicraft_location + "?" + query)
+        request = requests.post(self.multicraft_location, params)
 
         self.print_debug(colors.YELLOW + str(request.elapsed) + colors.END + " / ")
         self.print_debug(colors.GREEN if request.status_code == 200 else colors.RED)

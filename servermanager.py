@@ -3,7 +3,7 @@ import util
 import multicraftapi
 from time import gmtime, strftime
 
-config = util.get_json_file("config.json")
+config = util.get_json_file("hidden_config.json")
 api = multicraftapi.MulticraftAPI(config["multicraftapi"]["location"], config["multicraftapi"]["user"], config["multicraftapi"]["key"])
 
 servers = {}
