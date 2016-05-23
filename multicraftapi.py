@@ -306,8 +306,8 @@ class MulticraftAPI:
 
     # Schedule functions
 
-    def list_schedules(self):
-        return self.send_request("listSchedules")
+    def list_schedules(self, server_id):
+        return self.send_request("listSchedules", {"server_id": server_id})
 
     def find_schedules(self, server_id, field, value):
         return self.send_request("findSchedules", {"server_id": server_id, "field": field, "value": value})
