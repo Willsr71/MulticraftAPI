@@ -21,7 +21,7 @@ def get_servers():
         if server not in server_data["backup_times"]:
             server_data["backup_times"][server] = 0
 
-    util.set_json_file("server_data.json", server_data, True)
+    util.set_json_file("server_data.json", server_data)
 
 
 def check_servers():
@@ -29,7 +29,8 @@ def check_servers():
         print("==================================================")
     for server in servers:
         if round(time.time() - server_data["restarts"][server]) < config["ignore_after_start_delay"]:
-            print("Skipping server " + servers[server]["name"])
+            if config["debug"]["show_server_status_info"]:
+                print("Skipping server " + servers[server]["name"])
             continue
 
         status = api.get_server_status(server)["data"]["status"]
@@ -53,7 +54,12 @@ def check_servers():
 
             start_time = time.time()
 
-            util.zip_directory(server_location, backup_location, config["debug"]["show_folders_in_backup_progress"], config["debug"]["show_files_in_backup_progress"])
+            try:
+                util.zip_directory(server_location, backup_location, config["debug"]["show_folders_in_backup_progress"], config["debug"]["show_files_in_backup_progress"])
+            except PermissionError:
+                string = "Backup for server " + servers[server]["name"] + " failed. Permission Error."
+                print(string)
+                api.send_all_console_command("say " + string)
 
             finish_time = time.time() - start_time
 
@@ -65,7 +71,7 @@ def check_servers():
             server_data["restarts"][server] = time.time()
             server_data["backup_times"][server] = finish_time
 
-            util.set_json_file("server_data.json", server_data, True)
+            util.set_json_file("server_data.json", server_data)
 
 
 print("Starting initial check...")
