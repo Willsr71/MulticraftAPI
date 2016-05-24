@@ -97,10 +97,12 @@ print("Starting initial check...")
 get_servers()
 check_servers()
 
-print("Startup done. Polling every 30 seconds.")
+print("Startup done. Polling every " + str(config["polling_interval"]) + " seconds.")
+time.sleep(config["polling_interval"] - (time.time() % config["polling_interval"]))
 while True:
-    t = round(time.time())
+    t = time.time()
 
-    if t % 30 == 0:
+    if round(t) % config["polling_interval"] == 0:
         check_servers()
         get_servers()
+        time.sleep(config["polling_interval"] - (time.time() % config["polling_interval"]))
