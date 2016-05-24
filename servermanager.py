@@ -1,5 +1,6 @@
 import time
 import util
+import shutil
 import threading
 import multicraftapi
 from time import gmtime, strftime
@@ -18,15 +19,21 @@ class ServerBackupThread(threading.Thread):
         self.server = server
 
     def run(self):
+        start_time = round(time.time())
+
         server_name = self.server["name"]
         server_name = server_name.replace(" ", "_")
         server_name = server_name.lower()
 
-        backup_location = strftime(config["backup_location"], gmtime())
-        backup_location = backup_location.replace("{SERVER_NAME}", server_name)
         server_location = config["server_location"] + self.server["dir"]
 
-        print(server_location, " => ", backup_location)
+        temp_location = strftime(config["temp_location"], gmtime(start_time))
+        temp_location = temp_location.replace("{SERVER_NAME}", server_name)
+
+        backup_location = strftime(config["backup_location"], gmtime(start_time))
+        backup_location = backup_location.replace("{SERVER_NAME}", server_name)
+
+        print(server_location, " => ", temp_location)
 
         string = strftime("Backing up " + self.server["name"] + ". Last backup took %M minutes and %S seconds.", gmtime(server_data["backup_times"][self.server["id"]]))
         print(string)
@@ -35,7 +42,7 @@ class ServerBackupThread(threading.Thread):
         start_time = time.time()
 
         try:
-            util.zip_directory(server_location, backup_location, config["debug"]["show_folders_in_backup_progress"], config["debug"]["show_files_in_backup_progress"])
+            util.zip_directory(server_location, temp_location, config["debug"]["show_folders_in_backup_progress"], config["debug"]["show_files_in_backup_progress"])
         except PermissionError:
             string = "Backup for server " + self.server["name"] + " failed. Permission Error."
             print(string)
@@ -52,6 +59,12 @@ class ServerBackupThread(threading.Thread):
         server_data["backup_times"][self.server["id"]] = finish_time
 
         util.set_json_file("server_data.json", server_data)
+
+        print(temp_location, " => ", backup_location)
+
+        util.move_file(temp_location, backup_location)
+
+        print("Finished copying " + self.server["name"] + ".")
 
         del active_backups[self.server["id"]]
 

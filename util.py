@@ -1,6 +1,7 @@
 import os
 import sys
 import json
+import shutil
 import zipfile
 
 
@@ -24,6 +25,12 @@ def set_json_file(file_name, json_arr, indents=True):
 def print_line(w):
     sys.stdout.write(w)
     sys.stdout.flush()
+
+
+def move_file(source, dest):
+    if not os.path.exists(os.path.dirname(dest)):
+        os.makedirs(os.path.dirname(dest))
+    shutil.move(source, dest)
 
 
 def zip_directory(directory, zip_location, verbose=False, very_verbose=False):
