@@ -27,6 +27,12 @@ def print_line(w):
     sys.stdout.flush()
 
 
+def copy_directory(source, dest):
+    if not os.path.exists(os.path.dirname(dest)):
+        os.makedirs(os.path.dirname(dest))
+    shutil.copytree(source, dest)
+
+
 def move_file(source, dest):
     if not os.path.exists(os.path.dirname(dest)):
         os.makedirs(os.path.dirname(dest))
