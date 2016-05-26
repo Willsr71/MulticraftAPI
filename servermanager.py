@@ -42,7 +42,7 @@ class ServerBackupThread(threading.Thread):
         start_time = time.time()
 
         try:
-            util.zip_directory(server_location, temp_location, config["debug"]["show_folders_in_backup_progress"], config["debug"]["show_files_in_backup_progress"])
+            util.copy_directory(server_location, temp_location)
         except PermissionError:
             string = "Backup for server " + self.server["name"] + " failed. Permission Error."
             print(string)
@@ -62,9 +62,9 @@ class ServerBackupThread(threading.Thread):
 
         print(temp_location, " => ", backup_location)
 
-        util.move_file(temp_location, backup_location)
+        util.zip_directory(temp_location, backup_location, config["debug"]["show_folders_in_backup_progress"], config["debug"]["show_files_in_backup_progress"])
 
-        print("Finished copying " + self.server["name"] + ".")
+        print("Finished zipping " + self.server["name"] + ".")
 
         del active_backups[self.server["id"]]
 
